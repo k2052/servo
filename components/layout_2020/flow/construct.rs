@@ -359,7 +359,12 @@ where
                     {
                         let (non_whitespace, rest) = input.split_at(i);
                         output.push_str(non_whitespace);
-                        output.push(' ');
+
+                        // Ensure that multiple consecutive non-significant whitespace characters are
+                        // collapsed into a single whitespace character.
+                        if !output.ends_with(' ') {
+                            output.push(' ');
+                        }
 
                         // Find the first byte that is either significant whitespace or
                         // non-whitespace to continue processing it.
@@ -405,6 +410,12 @@ where
         // FIXME: this is only an approximation of
         // https://drafts.csswg.org/css2/text.html#white-space-model
         if !text.starts_with(|c: char| c.is_ascii_whitespace()) || white_space.preserve_spaces() {
+            return (false, text);
+        }
+
+        let trimmed_text = text.trim_start_matches(|c: char| c.is_ascii_whitespace());
+
+        if(trimmed_text.is_empty()) {
             return (false, text);
         }
 
