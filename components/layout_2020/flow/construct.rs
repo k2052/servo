@@ -415,7 +415,7 @@ where
 
         let trimmed_text = text.trim_start_matches(|c: char| c.is_ascii_whitespace());
 
-        if(trimmed_text.is_empty()) {
+        if (trimmed_text.is_empty()) {
             return (false, text);
         }
 
