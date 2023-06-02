@@ -360,11 +360,7 @@ where
                         let (non_whitespace, rest) = input.split_at(i);
                         output.push_str(non_whitespace);
 
-                        // Ensure that multiple consecutive non-significant whitespace characters are
-                        // collapsed into a single whitespace character.
-                        if !output.ends_with(' ') {
-                            output.push(' ');
-                        }
+                        output.push(' ');
 
                         // Find the first byte that is either significant whitespace or
                         // non-whitespace to continue processing it.
@@ -413,12 +409,6 @@ where
             return (false, text);
         }
 
-        let trimmed_text = text.trim_start_matches(|c: char| c.is_ascii_whitespace());
-
-        if (trimmed_text.is_empty()) {
-            return (false, text);
-        }
-
         let preserved = match whitespace_is_preserved(self.current_inline_level_boxes()) {
             WhitespacePreservedResult::Unknown => {
                 // Paragraph start.
@@ -443,7 +433,7 @@ where
                         return WhitespacePreservedResult::Preserved;
                     },
                     InlineLevelBox::Atomic { .. } => {
-                        return WhitespacePreservedResult::NotPreserved;
+                        return WhitespacePreservedResult::Preserved;
                     },
                     InlineLevelBox::OutOfFlowAbsolutelyPositionedBox(_) |
                     InlineLevelBox::OutOfFlowFloatBox(_) => {},
