@@ -131,6 +131,7 @@ stdenv.mkDerivation (androidEnvironment // {
   LD_LIBRARY_PATH = lib.makeLibraryPath [
     # Fixes missing library errors
     xorg.libXcursor xorg.libXrandr xorg.libXi libxkbcommon
+    wayland
 
     # [WARN  script::dom::gpu] Could not get GPUAdapter ("NotFound")
     # TLA Err: Error: Couldn't request WebGPU adapter.
